@@ -14,56 +14,97 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const data_1 = require("./data");
+const uuid_1 = require("uuid");
 let AppController = exports.AppController = class AppController {
     getAllIncomeReports1(type) {
-        console.log(type, ': type is');
-        return [];
+        const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
+        return data_1.data.report.filter((report) => report.type === reportType);
     }
-    getSpeicificIncomeReport() {
-        return 'Params get request';
+    getSpeicificIncomeReport(type, id) {
+        const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
+        return data_1.data.report
+            .filter((report) => report.type === reportType)
+            .find((report) => report.id === id);
     }
-    addingIncomeReport() {
-        return 'Created';
+    addingIncomeReport({ source, amount }, type) {
+        const newReport = {
+            id: (0, uuid_1.v4)(),
+            source,
+            amount,
+            created_at: new Date(),
+            updated_at: new Date(),
+            type: type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE,
+        };
+        data_1.data.report.push(newReport);
+        return newReport;
     }
-    updatingIncomeReport() {
-        return 'Updated';
+    updatingIncomeReport(body, id, type) {
+        const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
+        const reportToUpdate = data_1.data.report
+            .filter((report) => report.type === reportType)
+            .find((report) => report.id === id);
+        if (!reportToUpdate) {
+            return "Not found";
+        }
+        else {
+            const reportIndex = data_1.data.report.findIndex((report) => report.id === reportToUpdate.id);
+            data_1.data.report[reportIndex] = {
+                ...data_1.data.report[reportIndex],
+                ...body,
+            };
+            return data_1.data.report[reportIndex];
+        }
     }
-    deletingIncomeReport() {
-        return 'Deleted';
+    deletingIncomeReport(id) {
+        const reportIndex = data_1.data.report.findIndex((report) => report.id = id);
+        if (reportIndex === -1)
+            return "Not found";
+        data_1.data.report.splice(reportIndex, 1);
+        return data_1.data.report[reportIndex];
     }
 };
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Param)('type')),
+    __param(0, (0, common_1.Param)("type")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getAllIncomeReports1", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("type")),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getSpeicificIncomeReport", null);
 __decorate([
     (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)("type")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "addingIncomeReport", null);
 __decorate([
-    (0, common_1.Post)(':id'),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)("id")),
+    __param(2, (0, common_1.Param)("type")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "updatingIncomeReport", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.HttpCode)(204),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "deletingIncomeReport", null);
 exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)('report/:type')
+    (0, common_1.Controller)("report/:type")
 ], AppController);
 //# sourceMappingURL=app.controller.js.map
