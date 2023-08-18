@@ -77,7 +77,8 @@ export class AppController {
 
     if (!reportToUpdate) {
       return "Not found";
-    } else {
+    } 
+    else {
       const reportIndex = data.report.findIndex(
         (report) => report.id === reportToUpdate.id
       );
