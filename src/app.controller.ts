@@ -57,9 +57,28 @@ export class AppController {
     @Param("id") id: string,
     @Param("type") type: string
   ) {
-    const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
-      return this.appService.updateReport(reportType, id, body)
+    const reportType =
+      type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
+
+    const reportToUpdate = data.report
+      .filter((report) => report.type === reportType)
+      .find((report) => report.id === id);
+
+    if (!reportToUpdate) {
+      return "Not found";
+    } else {
+      const reportIndex = data.report.findIndex(
+        (report) => report.id === reportToUpdate.id
+      );
+      //now updating the report
+      data.report[reportIndex] = {
+        //editing the previous values of report
+        ...data.report[reportIndex],
+        ...body,
+      };
+      return data.report[reportIndex];
     }
+  }
 
   //Delete a thing
   @HttpCode(204)
