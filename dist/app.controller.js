@@ -15,66 +15,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const data_1 = require("./data");
-const uuid_1 = require("uuid");
+const app_service_1 = require("./app.service");
+const report_dto_1 = require("./dtos/report.dto");
 let AppController = exports.AppController = class AppController {
+    constructor(appService) {
+        this.appService = appService;
+    }
     getAllIncomeReports1(type) {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
-        return data_1.data.report.filter((report) => report.type === reportType);
+        return this.appService.getAllIncomeReports1(reportType);
     }
     getSpeicificIncomeReport(type, id) {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
-        return data_1.data.report
-            .filter((report) => report.type === reportType)
-            .find((report) => report.id === id);
+        return this.appService.getReportById(reportType, id);
     }
     addingIncomeReport({ source, amount }, type) {
-        const newReport = {
-            id: (0, uuid_1.v4)(),
-            source,
-            amount,
-            created_at: new Date(),
-            updated_at: new Date(),
-            type: type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE,
-        };
-        data_1.data.report.push(newReport);
-        return newReport;
+        const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
+        return this.appService.createReport(reportType, { amount, source });
     }
     updatingIncomeReport(body, id, type) {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
-        const reportToUpdate = data_1.data.report
-            .filter((report) => report.type === reportType)
-            .find((report) => report.id === id);
-        if (!reportToUpdate) {
-            return "Not found";
-        }
-        else {
-            const reportIndex = data_1.data.report.findIndex((report) => report.id === reportToUpdate.id);
-            data_1.data.report[reportIndex] = {
-                ...data_1.data.report[reportIndex],
-                ...body,
-            };
-            return data_1.data.report[reportIndex];
-        }
+        return this.appService.updateReport(reportType, id, body);
     }
     deletingIncomeReport(id) {
-        const reportIndex = data_1.data.report.findIndex((report) => report.id = id);
-        if (reportIndex === -1)
-            return "Not found";
-        data_1.data.report.splice(reportIndex, 1);
-        return data_1.data.report[reportIndex];
+        return this.appService.deleteReport(id);
     }
 };
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Param)("type")),
+    __param(0, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getAllIncomeReports1", null);
 __decorate([
     (0, common_1.Get)(":id"),
-    __param(0, (0, common_1.Param)("type")),
-    __param(1, (0, common_1.Param)("id")),
+    __param(0, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
+    __param(1, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
@@ -82,29 +59,30 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)("type")),
+    __param(1, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [report_dto_1.CreateReportDto, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "addingIncomeReport", null);
 __decorate([
     (0, common_1.Put)(":id"),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)("id")),
-    __param(2, (0, common_1.Param)("type")),
+    __param(1, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
+    __param(2, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:paramtypes", [report_dto_1.UpdateReportDto, String, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "updatingIncomeReport", null);
 __decorate([
     (0, common_1.HttpCode)(204),
     (0, common_1.Delete)(":id"),
-    __param(0, (0, common_1.Param)("id")),
+    __param(0, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "deletingIncomeReport", null);
 exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)("report/:type")
+    (0, common_1.Controller)("report/:type"),
+    __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

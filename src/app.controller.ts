@@ -7,10 +7,12 @@ import {
   Put,
   Body,
   HttpCode,
+  ParseUUIDPipe,
+  ParseEnumPipe,
 } from "@nestjs/common";
 import { ReportType, data } from "./data";
-import { v4 } from "uuid";
 import { AppService } from "./app.service";
+import { CreateReportDto, UpdateReportDto } from "./dtos/report.dto";
 
 //Controllers are the classes used to make different endpoints of an API
 @Controller("report/:type")
@@ -20,7 +22,7 @@ export class AppController {
 
   //Get All the things
   @Get()
-  getAllIncomeReports1(@Param("type") type: string) {
+  getAllIncomeReports1(@Param("type", new ParseEnumPipe(ReportType)) type: string) {
     const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
     return this.appService.getAllIncomeReports1(reportType)
   }
@@ -33,9 +35,8 @@ export class AppController {
   //Get the specific thing
   @Get(":id")
   getSpeicificIncomeReport(
-    @Param("type") type: string,
-    @Param("id") id: string
-  ) {
+    @Param("type",new ParseEnumPipe(ReportType)) type: string , @Param("id", ParseUUIDPipe) id: string
+    ) {
     const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
     return this.appService.getReportById(reportType, id)
   }
@@ -43,8 +44,8 @@ export class AppController {
   //Post a thing
   @Post() //or body: { amount: number; type: string })
   addingIncomeReport(
-    @Body() { source, amount }: { amount: number; source: string },
-    @Param("type") type: string
+    @Body() { source, amount}: CreateReportDto,
+    @Param("type", new ParseEnumPipe(ReportType)) type: string
   ) {
     const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE
     return this.appService.createReport(reportType, {amount, source} )
@@ -53,37 +54,16 @@ export class AppController {
   //Update a thing
   @Put(":id")
   updatingIncomeReport(
-    @Body() body: { amount: number; source: string },
-    @Param("id") id: string,
-    @Param("type") type: string
-  ) {
-    const reportType =
-      type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
-
-    const reportToUpdate = data.report
-      .filter((report) => report.type === reportType)
-      .find((report) => report.id === id);
-
-    if (!reportToUpdate) {
-      return "Not found";
-    } else {
-      const reportIndex = data.report.findIndex(
-        (report) => report.id === reportToUpdate.id
-      );
-      //now updating the report
-      data.report[reportIndex] = {
-        //editing the previous values of report
-        ...data.report[reportIndex],
-        ...body,
-      };
-      return data.report[reportIndex];
-    }
+    @Body() body: UpdateReportDto, @Param("id", ParseUUIDPipe) id: string,
+    @Param("type", new ParseEnumPipe(ReportType)) type: string) {
+    const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
+    return this.appService.updateReport(reportType, id, body)
   }
 
   //Delete a thing
   @HttpCode(204)
   @Delete(":id")
-  deletingIncomeReport(@Param("id") id: string) {
+  deletingIncomeReport(@Param("id", ParseUUIDPipe) id: string) {
     return this.appService.deleteReport(id)
   }
 }
