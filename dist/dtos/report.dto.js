@@ -41,8 +41,24 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateReportDto.prototype, "source", void 0);
 class ReportResponseDTO {
+    tranformeCreatedAt() {
+        return this.created_at;
+    }
+    constructor(partial) {
+        Object.assign(this, partial);
+    }
 }
 exports.ReportResponseDTO = ReportResponseDTO;
+__decorate([
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Date)
+], ReportResponseDTO.prototype, "created_at", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)({ name: "createdAt" }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ReportResponseDTO.prototype, "tranformeCreatedAt", null);
 __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", Date)

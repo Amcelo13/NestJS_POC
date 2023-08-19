@@ -13,13 +13,13 @@ export declare class AppService {
     getReportById(type: ReportType, id: string): ReportResponseDTO;
     createReport(type: ReportType, { amount, source }: ReportData): ReportResponseDTO;
     updateReport(type: ReportType, id: string, body: UpdateReportData): ReportResponseDTO | string;
-    deleteReport(id: string): {
+    deleteReport(id: string): "Not found" | {
         id: string;
         source: string;
         amount: number;
         created_at: Date;
         updated_at: Date;
         type: ReportType;
-    } | "Not found";
+    };
 }
 export {};

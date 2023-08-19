@@ -34,10 +34,19 @@ export class ReportResponseDTO{
   id: string;
   amount: number;
   source: string;
+
+  @Exclude()
   created_at: Date; 
+  @Expose({name:"createdAt"}) //this is used to change the name of the property in the response
+  tranformeCreatedAt(){
+    return this.created_at
+  }
   
   @Exclude()
   updated_at: Date;
   type: ReportType;
-
+  
+  constructor(partial: Partial<ReportResponseDTO>){ //so it means partial is of type Partially similar to ReportResponseDTO class members
+    Object.assign(this, partial)
+  }
 }

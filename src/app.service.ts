@@ -17,11 +17,15 @@ export class AppService {
 
   getAllIncomeReports1(type: ReportType):ReportResponseDTO[]{
     return data.report.filter((report) => report.type === type)
+    .map((report)=> new ReportResponseDTO(report))
   }
 
   getReportById(type: ReportType, id: string): ReportResponseDTO{
-    return data.report.filter((report)=> report.type === type)
-    .find((report)=> report.id === id)
+   const report =  data.report.filter((report)=> report.type === type).find((report)=> report.id === id)
+
+   if(!report) return 
+
+   return new ReportResponseDTO(report)
   }
 
   createReport(type: ReportType, {amount, source}:ReportData):ReportResponseDTO{
@@ -34,7 +38,7 @@ export class AppService {
       type
     };
     data.report.push(newReport);
-    return newReport;
+    return new ReportResponseDTO(newReport);
   }
 
   updateReport(type: ReportType, id:string, body:UpdateReportData):ReportResponseDTO | string{
@@ -54,7 +58,7 @@ export class AppService {
         ...data.report[reportIndex],
         ...body,
       };
-      return data.report[reportIndex];
+      return new ReportResponseDTO(data.report[reportIndex]);
     }
   }
 

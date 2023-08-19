@@ -10,13 +10,17 @@ exports.AppService = void 0;
 const data_1 = require("./data");
 const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
+const report_dto_1 = require("./dtos/report.dto");
 let AppService = exports.AppService = class AppService {
     getAllIncomeReports1(type) {
-        return data_1.data.report.filter((report) => report.type === type);
+        return data_1.data.report.filter((report) => report.type === type)
+            .map((report) => new report_dto_1.ReportResponseDTO(report));
     }
     getReportById(type, id) {
-        return data_1.data.report.filter((report) => report.type === type)
-            .find((report) => report.id === id);
+        const report = data_1.data.report.filter((report) => report.type === type).find((report) => report.id === id);
+        if (!report)
+            return;
+        return new report_dto_1.ReportResponseDTO(report);
     }
     createReport(type, { amount, source }) {
         const newReport = {
@@ -28,7 +32,7 @@ let AppService = exports.AppService = class AppService {
             type
         };
         data_1.data.report.push(newReport);
-        return newReport;
+        return new report_dto_1.ReportResponseDTO(newReport);
     }
     updateReport(type, id, body) {
         const reportToUpdate = data_1.data.report
@@ -43,7 +47,7 @@ let AppService = exports.AppService = class AppService {
                 ...data_1.data.report[reportIndex],
                 ...body,
             };
-            return data_1.data.report[reportIndex];
+            return new report_dto_1.ReportResponseDTO(data_1.data.report[reportIndex]);
         }
     }
     deleteReport(id) {

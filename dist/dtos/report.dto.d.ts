@@ -12,6 +12,8 @@ export declare class ReportResponseDTO {
     amount: number;
     source: string;
     created_at: Date;
+    tranformeCreatedAt(): Date;
     updated_at: Date;
     type: ReportType;
+    constructor(partial: Partial<ReportResponseDTO>);
 }
