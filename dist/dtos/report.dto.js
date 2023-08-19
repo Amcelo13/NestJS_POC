@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateReportDto = exports.CreateReportDto = void 0;
+exports.ReportResponseDTO = exports.UpdateReportDto = exports.CreateReportDto = void 0;
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class CreateReportDto {
 }
 exports.CreateReportDto = CreateReportDto;
@@ -39,4 +40,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateReportDto.prototype, "source", void 0);
+class ReportResponseDTO {
+}
+exports.ReportResponseDTO = ReportResponseDTO;
+__decorate([
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Date)
+], ReportResponseDTO.prototype, "updated_at", void 0);
 //# sourceMappingURL=report.dto.js.map

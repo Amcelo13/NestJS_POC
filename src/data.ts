@@ -16,7 +16,7 @@ interface Data {
 export const data: Data = {
   report: [
     {
-      id: 'uuid1',
+      id: '7f01ecee-7621-4bf5-a24a-ca61fa3087cd',
       source: 'FOOD',
       amount: 2000,
       created_at: new Date(),
@@ -24,7 +24,7 @@ export const data: Data = {
       type: ReportType.EXPENSE,
     }, 
     {
-      id: 'uuid',
+      id: '1926ae74-ff9b-48b3-a603-c833de7421ae',
       source: 'salary',
       amount: 1000,
       created_at: new Date(),

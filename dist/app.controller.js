@@ -29,9 +29,9 @@ let AppController = exports.AppController = class AppController {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
         return this.appService.getReportById(reportType, id);
     }
-    addingIncomeReport({ source, amount }, type) {
+    addingIncomeReport(body, type) {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
-        return this.appService.createReport(reportType, { amount, source });
+        return this.appService.createReport(reportType, body);
     }
     updatingIncomeReport(body, id, type) {
         const reportType = type === "income" ? data_1.ReportType.INCOME : data_1.ReportType.EXPENSE;
@@ -46,7 +46,7 @@ __decorate([
     __param(0, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Array)
 ], AppController.prototype, "getAllIncomeReports1", null);
 __decorate([
     (0, common_1.Get)(":id"),
@@ -54,7 +54,7 @@ __decorate([
     __param(1, (0, common_1.Param)("id", common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", report_dto_1.ReportResponseDTO)
 ], AppController.prototype, "getSpeicificIncomeReport", null);
 __decorate([
     (0, common_1.Post)(),
@@ -62,7 +62,7 @@ __decorate([
     __param(1, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [report_dto_1.CreateReportDto, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", report_dto_1.ReportResponseDTO)
 ], AppController.prototype, "addingIncomeReport", null);
 __decorate([
     (0, common_1.Put)(":id"),
@@ -71,7 +71,7 @@ __decorate([
     __param(2, (0, common_1.Param)("type", new common_1.ParseEnumPipe(data_1.ReportType))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [report_dto_1.UpdateReportDto, String, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Object)
 ], AppController.prototype, "updatingIncomeReport", null);
 __decorate([
     (0, common_1.HttpCode)(204),

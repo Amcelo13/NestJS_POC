@@ -1,4 +1,5 @@
 import { ReportType } from "./data";
+import { ReportResponseDTO } from "./dtos/report.dto";
 interface ReportData {
     amount: number;
     source: string;
@@ -8,38 +9,10 @@ interface UpdateReportData {
     source?: string;
 }
 export declare class AppService {
-    getAllIncomeReports1(type: ReportType): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    }[];
-    getReportById(type: ReportType, id: string): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    };
-    createReport(type: ReportType, { amount, source }: ReportData): {
-        id: any;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    };
-    updateReport(type: ReportType, id: string, body: UpdateReportData): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    } | "Not found";
+    getAllIncomeReports1(type: ReportType): ReportResponseDTO[];
+    getReportById(type: ReportType, id: string): ReportResponseDTO;
+    createReport(type: ReportType, { amount, source }: ReportData): ReportResponseDTO;
+    updateReport(type: ReportType, id: string, body: UpdateReportData): ReportResponseDTO | string;
     deleteReport(id: string): {
         id: string;
         source: string;

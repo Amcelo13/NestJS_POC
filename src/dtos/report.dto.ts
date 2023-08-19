@@ -1,8 +1,10 @@
 /* dto - DATA TRANSFER OBJECT */
 
 import { IsNumber, IsPositive, IsString, IsNotEmpty,IsOptional } from "class-validator";
+import {Exclude, Expose} from 'class-transformer';
+import { ReportType } from "src/data";
 
-//For Body validations we use the class-validator package and class-transformer package
+//For req --> Body validations we use the class-validator package and class-transformer package
 export class CreateReportDto {
   @IsNumber()
   @IsPositive()
@@ -12,7 +14,6 @@ export class CreateReportDto {
   @IsNotEmpty()
   source: string;
 }
-
 
 export class UpdateReportDto {
     
@@ -25,4 +26,18 @@ export class UpdateReportDto {
     @IsString()
     @IsNotEmpty()
     source: string;
+}
+
+
+//For res --> Body validations we use the class-transformer package
+export class ReportResponseDTO{
+  id: string;
+  amount: number;
+  source: string;
+  created_at: Date; 
+  
+  @Exclude()
+  updated_at: Date;
+  type: ReportType;
+
 }

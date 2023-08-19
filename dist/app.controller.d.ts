@@ -1,18 +1,14 @@
 import { ReportType } from "./data";
 import { AppService } from "./app.service";
-import { CreateReportDto, UpdateReportDto } from "./dtos/report.dto";
+import { CreateReportDto, ReportResponseDTO, UpdateReportDto } from "./dtos/report.dto";
 export declare class AppController {
     private readonly appService;
     constructor(appService: AppService);
-    getAllIncomeReports1(type: string): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    }[];
-    getSpeicificIncomeReport(type: string, id: string): {
+    getAllIncomeReports1(type: string): ReportResponseDTO[];
+    getSpeicificIncomeReport(type: string, id: string): ReportResponseDTO;
+    addingIncomeReport(body: CreateReportDto, type: string): ReportResponseDTO;
+    updatingIncomeReport(body: UpdateReportDto, id: string, type: string): ReportResponseDTO | string;
+    deletingIncomeReport(id: string): "Not found" | {
         id: string;
         source: string;
         amount: number;
@@ -20,28 +16,4 @@ export declare class AppController {
         updated_at: Date;
         type: ReportType;
     };
-    addingIncomeReport({ source, amount }: CreateReportDto, type: string): {
-        id: any;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    };
-    updatingIncomeReport(body: UpdateReportDto, id: string, type: string): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    } | "Not found";
-    deletingIncomeReport(id: string): {
-        id: string;
-        source: string;
-        amount: number;
-        created_at: Date;
-        updated_at: Date;
-        type: ReportType;
-    } | "Not found";
 }
