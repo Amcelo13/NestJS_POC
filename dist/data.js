@@ -45,7 +45,7 @@ exports.data.report.push({
 exports.data.report.push({
     id: 'uuid1',
     source: 'FOOD',
-    amount: 2000,
+    amount: 5000,
     created_at: new Date(),
     updated_at: new Date(),
     type: ReportType.EXPENSE,

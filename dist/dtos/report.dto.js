@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportResponseDTO = exports.UpdateReportDto = exports.CreateReportDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const swagger_1 = require("@nestjs/swagger");
 class CreateReportDto {
 }
 exports.CreateReportDto = CreateReportDto;
@@ -25,21 +26,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "source", void 0);
-class UpdateReportDto {
+class UpdateReportDto extends (0, swagger_1.PartialType)(CreateReportDto) {
 }
 exports.UpdateReportDto = UpdateReportDto;
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsPositive)(),
-    __metadata("design:type", Number)
-], UpdateReportDto.prototype, "amount", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], UpdateReportDto.prototype, "source", void 0);
 class ReportResponseDTO {
     tranformeCreatedAt() {
         return this.created_at;

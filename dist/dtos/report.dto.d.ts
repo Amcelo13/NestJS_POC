@@ -3,9 +3,8 @@ export declare class CreateReportDto {
     amount: number;
     source: string;
 }
-export declare class UpdateReportDto {
-    amount: number;
-    source: string;
+declare const UpdateReportDto_base: import("@nestjs/common").Type<Partial<CreateReportDto>>;
+export declare class UpdateReportDto extends UpdateReportDto_base {
 }
 export declare class ReportResponseDTO {
     id: string;
@@ -17,3 +16,4 @@ export declare class ReportResponseDTO {
     type: ReportType;
     constructor(partial: Partial<ReportResponseDTO>);
 }
+export {};

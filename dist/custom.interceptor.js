@@ -5,9 +5,15 @@ const rxjs_1 = require("rxjs");
 class CustomInterceptor {
     intercept(context, handler) {
         console.log("Intercepting the request");
+        console.log({ context });
         return handler.handle().pipe((0, rxjs_1.map)((data) => {
-            console.log('Intercepting the response');
-            return data;
+            const response = {
+                ...data,
+                createdAt: data.created_at
+            };
+            delete response.updated_at;
+            delete response.created_at;
+            return response;
         }));
     }
 }
