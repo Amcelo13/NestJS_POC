@@ -11,7 +11,7 @@ export class SummaryService {
     .reduce((sum, report) => sum + report.amount , 0)
     const totalIncome = this.reportService.getAllIncomeReports1(ReportType.INCOME)
     .reduce((sum, report) => sum + report.amount , 0)
-    
+     
     return {
         totalExpense,
         totalIncome,
