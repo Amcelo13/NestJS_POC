@@ -5,8 +5,9 @@ import { ReportService } from "src/report/report.service";
 @Injectable()
 export class SummaryService {
   constructor(private readonly reportService: ReportService) {}
+
   
-  calculateSummary() {
+  calculateSummary() {                                                                                                                           
     const totalExpense = this.reportService.getAllIncomeReports1(ReportType.EXPENSE)
     .reduce((sum, report) => sum + report.amount , 0)
     const totalIncome = this.reportService.getAllIncomeReports1(ReportType.INCOME)
@@ -19,3 +20,5 @@ export class SummaryService {
     } 
   }
 }
+
+
